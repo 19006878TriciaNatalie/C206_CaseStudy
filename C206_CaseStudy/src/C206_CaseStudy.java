@@ -1,6 +1,15 @@
 import java.util.ArrayList;
 public class C206_CaseStudy {
 
+	private static final int ARCHIVE_DATA = 3;
+	private static final int OPTION_TRANSACTION = 4;
+	private static final int OPTION_CUSTOMER = 3;
+	private static final int OPTION_OUTLET = 2;
+	private static final int VIEW_ALL = 3;
+	private static final int DELETE = 2;
+	private static final int ELECTRONICS = 2;
+	private static final int FOOD = 1;
+	private static final int ADD = 1;
 	private static final int OPTION_QUIT = 5;
 	public static void main(String[] args) {
 		ArrayList<Food> foodList = new ArrayList<Food>();
@@ -30,35 +39,35 @@ public class C206_CaseStudy {
 				C206_CaseStudy.Service_menu(option);
 				int seroption = Helper.readInt("Enter service option > ");
 
-				if (seroption == 1) {
+				if (seroption == ADD) {
 					// Add a product
 					C206_CaseStudy.ITEMTYPE_MENU();
 					int catenumber=Helper.readInt("Enter an option > ");
-					if(catenumber==1) {
+					if(catenumber==FOOD) {
 						Food fd=inputFood();
 						C206_CaseStudy.addFood(foodList, fd);	
-					} else if(catenumber==2){
+					} else if(catenumber==ELECTRONICS){
 						Electronics el=inputEle();
 						C206_CaseStudy.addEle(electronicsList, el);
 					}else {
 						System.out.println("Invalid option");
 					}
 					
-				} else if (seroption == 2) {
+				} else if (seroption == DELETE) {
 					// Delete product
 					C206_CaseStudy.ITEMTYPE_MENU();
 					int catenumber=Helper.readInt("Enter an option > ");
-					if(catenumber==1) {
+					if(catenumber==FOOD) {
 						
 						C206_CaseStudy.removeFood(foodList);	
-					} else if (catenumber==2){
+					} else if (catenumber==ELECTRONICS){
 					
 						C206_CaseStudy.removeEle(electronicsList);
 					}else {
 						System.out.println("Invalid option");
 					}
 
-				}else if (seroption == 3) {
+				}else if (seroption == VIEW_ALL) {
 					// view all product
 					C206_CaseStudy.ITEMTYPE_MENU();
 					int catenumber=Helper.readInt("Enter an option > ");
@@ -74,19 +83,19 @@ public class C206_CaseStudy {
 					System.out.println("Invalid type");
 				}
 
-			} else if (option == 2) {
+			} else if (option == OPTION_OUTLET) {
 				//outlet
 				C206_CaseStudy.Service_menu(option);
 				int seroption = Helper.readInt("Enter service option > ");
 			// Add a new outlet
-				if (seroption == 1) {
+				if (seroption == ADD) {
 					// Add a outlet
 						Outlet ou=inputOutlet();
 						C206_CaseStudy.addOutlet(outletList, ou);	
-				}else if (seroption == 2) {
+				}else if (seroption == DELETE) {
 					// Delete outlet							
 						C206_CaseStudy.removeOutlet(outletList);	
-					}else if (seroption == 3) {
+					}else if (seroption == VIEW_ALL) {
 						// view all outlet
 					C206_CaseStudy.viewOutlet(outletList);	
 					
@@ -95,18 +104,18 @@ public class C206_CaseStudy {
 						System.out.println("Invalid type");
 					}
 						
-				} else if (option == 3) {
+				} else if (option == OPTION_CUSTOMER) {
 				// Customer
 					C206_CaseStudy.Service_menu(option);
 					int seroption = Helper.readInt("Enter service option > ");
-						if (seroption == 1) {
+						if (seroption == ADD) {
 							// Add a customer
 								Customer cu=inputCustomer();
 								C206_CaseStudy.addOutlet(customerList, cu);	
-						}else if (seroption == 2) {
+						}else if (seroption == DELETE) {
 							// Delete customer							
 								C206_CaseStudy.removeCustomer(customerList);	
-							}else if (seroption == 3) {
+							}else if (seroption == VIEW_ALL) {
 								// view all customer
 							C206_CaseStudy.viewCustomer(customerList);	
 							
@@ -115,18 +124,18 @@ public class C206_CaseStudy {
 								System.out.println("Invalid type");
 							}
 
-			} else if (option == 4) {
+			} else if (option == OPTION_TRANSACTION) {
 //				// Tracking 
 				C206_CaseStudy.Service_menu(option);
 				int seroption = Helper.readInt("Enter service option > ");
-					if (seroption == 1) {
+					if (seroption == ADD) {
 						// Add a transaction
 							Tracker tr=inputTransaction(customerList);
 							C206_CaseStudy.addTransaction(trackList, tr);	
-					}else if (seroption == 2) {
+					}else if (seroption == VIEW_ALL) {
 						// View Transaction							
 							C206_CaseStudy.viewTransaction(trackList);	
-						}else if (seroption == 3) {
+						}else if (seroption == ARCHIVE_DATA) {
 							// Archive old transactions
 						C206_CaseStudy.archiveOldTransaction(trackList,oldtrackList);	
 												
@@ -134,7 +143,7 @@ public class C206_CaseStudy {
 						else {
 							System.out.println("Invalid type");
 						}
-			}else if (option == 5) {
+			}else if (option == OPTION_QUIT) {
 				System.out.println("Bye!");
 			}else {
 				System.out.println("Invalid option");
@@ -218,13 +227,7 @@ public class C206_CaseStudy {
 		System.out.println("There is nothing to be deleted in the list.");
 	}else {
 	C206_CaseStudy.viewFoodProduct(foodList);
-	int product_id=Helper.readInt("Enter product ID that you want to remove >");
-	int productpos=-1;
-	for (int i=0;i<foodList.size();i++) {
-		if (product_id==foodList.get(i).getProduct_id()) {
-			productpos=i;
-		}
-	}
+	int productpos = locateFood(foodList);
 	String yes_no=Helper.readString("You sure want to delete "+foodList.get(productpos).getProduct_name()+" ? (Yes/No)>");
 	if (yes_no.equalsIgnoreCase("Yes")) {
 		foodList.remove(productpos);
@@ -232,12 +235,31 @@ public class C206_CaseStudy {
 	}
 	}
 	}
+	public static int locateFood(ArrayList<Food> foodList) {
+		int product_id=Helper.readInt("Enter product ID that you want to remove >");
+		int productpos=-1;
+		for (int i=0;i<foodList.size();i++) {
+			if (product_id==foodList.get(i).getProduct_id()) {
+				productpos=i;
+			}
+		}
+		return productpos;
+	}
 	
 	public static void removeEle(ArrayList<Electronics> electronicsList) {
 		if(electronicsList.size()==0) {
 			System.out.println("There is nothing to be deleted in the list.");
 		}else {
 		C206_CaseStudy.viewEleProduct(electronicsList);
+		int productpos = locateEle(electronicsList);
+		String yes_no=Helper.readString("You sure want to delete "+electronicsList.get(productpos).getProduct_name()+" ? (Yes/No)>");
+		if (yes_no.equalsIgnoreCase("Yes")) {
+			electronicsList.remove(productpos);
+			System.out.println("Electronics has been deleted");
+		}
+		}	
+	}
+	public static int locateEle(ArrayList<Electronics> electronicsList) {
 		int product_id=Helper.readInt("Enter product ID that you want to remove >");
 		int productpos=-1;
 		for (int i=0;i<electronicsList.size();i++) {
@@ -245,12 +267,7 @@ public class C206_CaseStudy {
 				productpos=i;
 			}
 		}
-		String yes_no=Helper.readString("You sure want to delete "+electronicsList.get(productpos).getProduct_name()+" ? (Yes/No)>");
-		if (yes_no.equalsIgnoreCase("Yes")) {
-			electronicsList.remove(productpos);
-			System.out.println("Electronics has been deleted");
-		}
-		}	
+		return productpos;
 	}
 	//=================view all===============================
 	public static String retrieveAllFoodProduct(ArrayList<Food> foodList) {
