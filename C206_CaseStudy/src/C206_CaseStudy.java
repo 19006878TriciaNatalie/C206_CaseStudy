@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 public class C206_CaseStudy {
 
+	private static final int TRANSACTION_VIEWALL = 2;
 	private static final int ARCHIVE_DATA = 3;
 	private static final int OPTION_TRANSACTION = 4;
 	private static final int OPTION_CUSTOMER = 3;
@@ -132,7 +133,7 @@ public class C206_CaseStudy {
 						// Add a transaction
 							Tracker tr=inputTransaction(customerList);
 							C206_CaseStudy.addTransaction(trackList, tr);	
-					}else if (seroption == VIEW_ALL) {
+					}else if (seroption == TRANSACTION_VIEWALL) {
 						// View Transaction							
 							C206_CaseStudy.viewTransaction(trackList);	
 						}else if (seroption == ARCHIVE_DATA) {
@@ -186,8 +187,8 @@ public class C206_CaseStudy {
 		Helper.line(80, "-");
  }
 
-//=================Option 1===============================
-	//=================Add===============================
+//=================Option 1 Product===============================(Jia Wei)
+	//=================Add===============================(Jia Wei)
 	public static Food inputFood() {
 		int product_id = Helper.readInt("Enter Product ID > ");
 		String product_name = Helper.readString("Enter Product name > ");
@@ -221,19 +222,23 @@ public class C206_CaseStudy {
 		electronicsList.add(el);
 		System.out.println("Electronic added");
 	}
-	//=================Delete===============================
+	//=================Delete===============================(Jia Wei)
 	public static void removeFood(ArrayList<Food> foodList) {
 	if(foodList.size()==0) {
 		System.out.println("There is nothing to be deleted in the list.");
 	}else {
 	C206_CaseStudy.viewFoodProduct(foodList);
 	int productpos = locateFood(foodList);
-	String yes_no=Helper.readString("You sure want to delete "+foodList.get(productpos).getProduct_name()+" ? (Yes/No)>");
+	String yes_no = confirmationFood(foodList, productpos);
 	if (yes_no.equalsIgnoreCase("Yes")) {
 		foodList.remove(productpos);
 		System.out.println("Food has been deleted");
 	}
 	}
+	}
+	public static String confirmationFood(ArrayList<Food> foodList, int productpos) {
+		String yes_no=Helper.readString("You sure want to delete "+foodList.get(productpos).getProduct_name()+" ? (Yes/No)>");
+		return yes_no;
 	}
 	public static int locateFood(ArrayList<Food> foodList) {
 		int product_id=Helper.readInt("Enter product ID that you want to remove >");
@@ -269,7 +274,7 @@ public class C206_CaseStudy {
 		}
 		return productpos;
 	}
-	//=================view all===============================
+	//=================view all===============================(Jia Wei)
 	public static String retrieveAllFoodProduct(ArrayList<Food> foodList) {
 		String output="";
 		for (int i = 0; i < foodList.size(); i++) {
@@ -304,8 +309,8 @@ public class C206_CaseStudy {
 		System.out.println(output);
 	}
 	
-	//=================Option 2===============================
-	//=================Add===============================
+	//=================Option 2 Outlet===============================(Yan Xin)
+	//=================Add===============================(Yan Xin)
 	public static Outlet inputOutlet() {
 		int outlet_id = Helper.readInt("Enter Outlet ID > ");
 		String outlet_name = Helper.readString("Enter Outlet name > ");
@@ -321,7 +326,7 @@ public class C206_CaseStudy {
 		outletList.add(ou);
 		System.out.println("Outlet added");
 	}
-	//=================Delete===============================
+	//=================Delete===============================(Yan Xin)
 	public static void removeOutlet(ArrayList<Outlet> outletList) {
 	if(outletList.size()==0) {
 		System.out.println("There is nothing to be deleted in the list.");
@@ -341,7 +346,7 @@ public class C206_CaseStudy {
 	}
 	}
 	}
-	//=================view all===============================
+	//=================view all===============================(Yan Xin)
 	public static String retrieveAllOutlet(ArrayList<Outlet> outletList) {
 		String output="";
 		for (int i = 0; i < outletList.size(); i++) {
@@ -357,8 +362,8 @@ public class C206_CaseStudy {
 		 output += retrieveAllOutlet(outletList);	
 		System.out.println(output);
 	}
-	//=================Option 3===============================
-	//=================Add====================================
+	//=================Option 3 Customer===============================(Cheryl)
+	//=================Add====================================(Cheryl)
 	public static Customer inputCustomer() {
 		int customer_id = Helper.readInt("Enter Customer ID > ");
 		String customer_name = Helper.readString("Enter Customer name > ");
@@ -375,7 +380,7 @@ public class C206_CaseStudy {
 		customerList.add(cu);
 		System.out.println("Customer added");
 	}
-	//=================Delete=================================
+	//=================Delete=================================(Cheryl)
 	public static void removeCustomer(ArrayList<Customer> customerList) {
 	if(customerList.size()==0) {
 		System.out.println("There is nothing to be deleted in the list.");
@@ -395,7 +400,7 @@ public class C206_CaseStudy {
 	}
 	}
 	}
-	//=================view all===============================
+	//=================view all===============================(Cheryl)
 	public static String retrieveAllCustomer(ArrayList<Customer> customerList) {
 		String output="";
 		for (int i = 0; i < customerList.size(); i++) {
@@ -411,8 +416,8 @@ public class C206_CaseStudy {
 		 output += retrieveAllCustomer(customerList);	
 		System.out.println(output);
 	}
-	//=================Option 4===============================
-	//=================Add====================================
+	//=================Option 4 Transaction===============================(Tricia)
+	//=================Add====================================(Tricia)
 	public static Tracker inputTransaction(ArrayList<Customer>customerList) {
 		String customer_name = "";
 		int customer_contactNo =0;
@@ -438,7 +443,7 @@ public class C206_CaseStudy {
 		trackList.add(tr);
 		System.out.println("Transaction added");
 	}
-	//=================view all=================================
+	//=================view all=================================(Tricia)
 	public static String retrieveAllTransaction(ArrayList<Tracker> trackList) {
 		String output="";
 		for (int i = 0; i < trackList.size(); i++) {
@@ -454,7 +459,7 @@ public class C206_CaseStudy {
 		 output += retrieveAllTransaction(trackList);	
 		System.out.println(output);
 	}
-	//=================Archive old transactions===============================
+	//=================Archive old transactions===============================(Tricia)
 	public static void archiveOldTransaction(ArrayList<Tracker> trackList,ArrayList<Tracker> oldtrackList) {
 	if(trackList.size()==0) {
 		System.out.println("There is nothing in the list to archive");
